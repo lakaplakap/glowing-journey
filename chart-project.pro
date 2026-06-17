@@ -8,10 +8,18 @@ CONFIG += c++17
 
 SOURCES += \
     chart.cpp \
+    datasource.cpp \
+    histogram.cpp \
+    linechart.cpp \
+    piechart.cpp \
     main.cpp
 
 HEADERS += \
-    chart.h
+    chart.h \
+    datasource.h \
+    histogram.h \
+    linechart.h \
+    piechart.h
 
 FORMS +=
 

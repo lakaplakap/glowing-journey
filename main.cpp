@@ -1,4 +1,7 @@
-#include "chart.h"
+#include "datasource.h"
+#include "histogram.h"
+#include "linechart.h"
+#include "piechart.h"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -47,8 +50,12 @@ static const char *APP_STYLE = R"(
         background-color: #EEF1F7;
         border-top: 1px solid #D8DCE4;
         font-size: 12px;
-        color: #555555;
+        color: #1A56DB;
         padding: 3px;
+    }
+    QStatusBar QLabel{
+        color: #1A56DB;
+        font-size: 12px;
     }
     QGroupBox {
         font-weight: bold;
