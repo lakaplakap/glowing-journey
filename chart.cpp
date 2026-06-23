@@ -1,11 +1,8 @@
 #include "chart.h"
-
-#include <QFont>
-#include <QPen>
-#include <QBrush>
+#include <QPainter>
 #include <QPainterPath>
 
-// ==================== Chart 基类实现 ====================
+//Chart 基类实现
 Chart::Chart(QWidget *parent)
     : QWidget(parent), title("默认图表"), color(Qt::blue), m_dataSource(nullptr)
 {

@@ -3,14 +3,14 @@
 
 #include "chart.h"
 
-// ============ 柱状图 ============
+//柱状图
 class Histogram : public Chart
 {
     Q_OBJECT
 public:
     explicit Histogram(QWidget *parent = nullptr);
     Histogram(QString t, QColor c, QWidget *parent = nullptr);
-    void draw(QPainter &painter) override;
+    virtual void draw(QPainter &painter);
 };
 
-#endif // HISTOGRAM_H
+#endif

@@ -1,6 +1,6 @@
 #include "piechart.h"
 
-// ==================== 饼图 PieChart 实现 ====================
+//饼图 PieChart 实现
 PieChart::PieChart(QWidget *parent)
     : Chart("饼图", QColor(0xEE, 0xAA, 0x00), parent)
 {}
@@ -129,8 +129,20 @@ void PieChart::draw(QPainter &painter)
 
         // 标签
         painter.setPen(QColor(0x33, 0x33, 0x33));
-        QString label = QString("数据 %1: %2 (%3%)")
-                            .arg(i + 1)
+        QString itemName;
+        if (m_dataSource->hasLabels() && i < m_dataSource->labels().size()) {
+            itemName = m_dataSource->labels()[i];
+            // 超长标签截断
+            QFontMetrics fm(painter.font());
+            int maxLabelWidth = int(legendWidth - swatchSize - 80);
+            if (fm.horizontalAdvance(itemName) > maxLabelWidth) {
+                itemName = fm.elidedText(itemName, Qt::ElideRight, maxLabelWidth);
+            }
+        } else {
+            itemName = QString("数据 %1").arg(i + 1);
+        }
+        QString label = QString("%1: %2 (%3%)")
+                            .arg(itemName)
                             .arg(d[i], 0, 'f', 1)
                             .arg(ratio * 100, 0, 'f', 1);
         painter.drawText(QRectF(legendX + swatchSize + 6, legendY, legendWidth - swatchSize - 16, 18),

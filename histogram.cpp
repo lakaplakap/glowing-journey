@@ -1,6 +1,6 @@
 #include "histogram.h"
 
-// ==================== 柱状图 Histogram 实现 ====================
+//柱状图 Histogram 实现
 Histogram::Histogram(QWidget *parent)
     : Chart("柱状图", QColor::fromHsl(0, 200, 120), parent)
 {}
@@ -73,10 +73,20 @@ void Histogram::draw(QPainter &painter)
         painter.drawText(valRect, Qt::AlignHCenter | Qt::AlignBottom,
                          QString::number(d[i], 'f', 1));
 
-        // X 轴标签（索引号）
-        QRectF xLabelRect(x, bottom + 4, barWidth, 18);
-        painter.drawText(xLabelRect, Qt::AlignHCenter | Qt::AlignTop,
-                         QString::number(i + 1));
+        // X 轴标签（优先使用数据标签，否则使用索引号）
+        QRectF xLabelRect(x - 5, bottom + 4, barWidth + 10, 18);
+        QString xLabel;
+        if (m_dataSource->hasLabels() && i < m_dataSource->labels().size()) {
+            xLabel = m_dataSource->labels()[i];
+            // 超长标签截断并加省略号
+            QFontMetrics fm(painter.font());
+            if (fm.horizontalAdvance(xLabel) > barWidth + 8) {
+                xLabel = fm.elidedText(xLabel, Qt::ElideRight, int(barWidth + 8));
+            }
+        } else {
+            xLabel = QString::number(i + 1);
+        }
+        painter.drawText(xLabelRect, Qt::AlignHCenter | Qt::AlignTop, xLabel);
     }
     painter.restore();
 }

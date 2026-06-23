@@ -2,7 +2,7 @@
 
 #include <QPainterPath>
 
-// ==================== 折线图 LineChart 实现 ====================
+//折线图 LineChart 实现
 LineChart::LineChart(QWidget *parent)
     : Chart("折线图", QColor::fromHsl(140, 200, 100), parent)
 {}
@@ -101,9 +101,20 @@ void LineChart::draw(QPainter &painter)
     // X 轴标签
     painter.setPen(QColor(0x55, 0x55, 0x55));
     for (int i = 0; i < n; ++i) {
-        QRectF xLabelRect(points[i].x() - 15, bottom + 4, 30, 18);
-        painter.drawText(xLabelRect, Qt::AlignHCenter | Qt::AlignTop,
-                         QString::number(i + 1));
+        QString xLabel;
+        if (m_dataSource->hasLabels() && i < m_dataSource->labels().size()) {
+            xLabel = m_dataSource->labels()[i];
+            // 超长标签截断
+            QFontMetrics fm(painter.font());
+            int maxLabelWidth = (n > 1) ? int(stepX * 0.9) : 80;
+            if (fm.horizontalAdvance(xLabel) > maxLabelWidth) {
+                xLabel = fm.elidedText(xLabel, Qt::ElideRight, maxLabelWidth);
+            }
+        } else {
+            xLabel = QString::number(i + 1);
+        }
+        QRectF xLabelRect(points[i].x() - 20, bottom + 4, 40, 18);
+        painter.drawText(xLabelRect, Qt::AlignHCenter | Qt::AlignTop, xLabel);
     }
 
     painter.restore();
